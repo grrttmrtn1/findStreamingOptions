@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }} Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='movie_styles.css') }}" />
+</head>
+<body>
+  <div class="results-wrapper">
+    <h1 class="results-title">Results for: {{ title }}</h1>
+    <div id="movie-results">Loading...</div>
+  </div>
+
+  <script>
+    const MOVIE_TITLE = {{ title|tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

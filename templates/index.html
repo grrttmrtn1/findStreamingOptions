@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Search</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="site-header">
+      <div class="logo">🎬 Where to Watch</div>
+    </header>
+
+    <main class="search-panel">
+      <h1>Find Your Next show</h1>
+      <p class="subtitle">Search where you can watch your next show.</p>
+      <form action="/getMovie" method="GET">
+        <input type="text" name="title" placeholder="e.g. Show Title" required />
+        <button type="submit">Search</button>
+      </form>
+    </main>
+
+    <footer class="site-footer">
+    </footer>
+  </div>
+</body>
+</html>
