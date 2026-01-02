@@ -3,14 +3,14 @@ import os
 
 _config = None
 
-def load_config(path='/home/gmartin/dev/findMovies/config.ini'):
+def load_config(path='./config.ini'):
     global _config
     if _config is None:
         _config = configparser.ConfigParser()
         _config.read(path)
     return _config
 
-def validate_config(path='/home/gmartin/dev/findMovies/config.ini') -> bool:
+def validate_config(path='./config.ini') -> bool:
     if not os.path.exists(path):
         print(f"Config file not found at: {path}")
         return False

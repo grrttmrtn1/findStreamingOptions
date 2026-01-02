@@ -30,3 +30,6 @@ def getMovieData():
     if not title:
         return jsonify({"error": "Missing title"}), 400
     return jsonify(movies.search_Title(title))
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)

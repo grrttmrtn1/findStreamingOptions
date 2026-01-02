@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const movies = Array.isArray(data) ? data : [data];
 
-      if (movies.length === 0 || !movies[0].title) {
+      if (movies.length === 0) {
         container.textContent = "No results found.";
         return;
       }
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <img src="${posterUrl}" alt="${movie.title} poster" class="movie-poster">
             <div class="movie-info">
               <h2>
-                ${movie.title}
+                ${movie?.title ?? 'Unknown Title'}
                 ${movie.releaseYear ? ` (${movie.releaseYear})` : ''}
               </h2>
               <div class="genres">
