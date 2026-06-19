@@ -1,4 +1,12 @@
-.venv/
-__pycache__/
-.git/
+.git
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.mypy_cache
+.coverage
+htmlcov
+config.ini
 .env
+.envrc
+*.log

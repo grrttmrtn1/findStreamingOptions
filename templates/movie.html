@@ -2,17 +2,85 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ title }} Results</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='movie_styles.css') }}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="results-wrapper">
-    <h1 class="results-title">Results for: {{ title }}</h1>
-    <div id="movie-results">Loading...</div>
-  </div>
+  <header class="site-header">
+    <a class="logo" href="/">Where to Watch</a>
+    <form class="header-search" action="/getMovie" method="GET">
+      <input type="text" name="title" value="{{ title }}" aria-label="Search title" />
+      <select name="country" aria-label="Country">
+        {% for option in countries %}
+          <option value="{{ option.code }}" {% if option.code == country %}selected{% endif %}>{{ option.name }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Search</button>
+    </form>
+  </header>
+
+  <main class="results-wrapper">
+    <section class="results-hero" id="results-hero">
+      <div>
+        <a class="back-link" href="/">New search</a>
+        <p class="eyebrow">Streaming availability</p>
+        <h1 class="results-title">Results for {{ title }}</h1>
+        <p id="result-summary" class="result-summary">Loading matches and streaming options...</p>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="Result filters">
+      <label>
+        Type
+        <select id="type-filter">
+          <option value="all">All</option>
+          <option value="movie">Movies</option>
+          <option value="series">Series</option>
+        </select>
+      </label>
+
+      <label>
+        Service
+        <select id="service-filter">
+          <option value="all">All services</option>
+        </select>
+      </label>
+
+      <label>
+        Availability
+        <select id="availability-filter">
+          <option value="all">All</option>
+          <option value="subscription">Subscription</option>
+          <option value="free">Free</option>
+          <option value="rent">Rent</option>
+          <option value="buy">Buy</option>
+          <option value="addon">Add-on</option>
+        </select>
+      </label>
+
+      <label>
+        Sort
+        <select id="sort-filter">
+          <option value="relevance">Best match</option>
+          <option value="rating">Highest rated</option>
+          <option value="newest">Newest</option>
+          <option value="recent">Recently added</option>
+          <option value="expiring">Expiring soon</option>
+        </select>
+      </label>
+    </section>
+
+    <div id="status-message" class="status-message" role="status">Loading...</div>
+    <section id="movie-results" class="movie-grid" aria-live="polite"></section>
+  </main>
 
   <script>
-    const MOVIE_TITLE = {{ title|tojson }};
+    window.APP_CONFIG = {
+      title: {{ title|tojson }},
+      country: {{ country|tojson }}
+    };
   </script>
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>

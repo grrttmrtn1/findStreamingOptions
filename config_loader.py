@@ -1,5 +1,6 @@
 import configparser
 import os
+from urllib.parse import urlparse
 
 _config = None
 
@@ -26,42 +27,47 @@ def validate_config(path='./config.ini') -> bool:
         return False
 
 
-def _get(section, key):
+def _get(section, key, default=None):
+    env_key = key.upper()
+    if env_key in os.environ:
+        return os.environ[env_key]
+
     config = load_config()
     if not config.has_section(section):
-        return False
+        return default
     if not config.has_option(section, key):
-        return False
-    return True
+        return default
+    return config.get(section, key)
 
 
 def get_country():
-    if _get('app', 'country'):
-        return load_config().get('app', 'country')
-    return False
+    return _get('app', 'country', 'us')
 
 def get_series_granularity():
-    if _get('app', 'series_granularity'):
-        return load_config().get('app', 'series_granularity')
-    return False
+    return _get('app', 'series_granularity', 'show')
     
 def get_output_language():
-    if _get('app', 'output_language'):
-        return load_config().get('app', 'output_language')
-    return False
+    return _get('app', 'output_language', 'en')
 
 def get_show_type():
-    if _get('app', 'show_type'):
-        return load_config().get('app', 'show_type')
-    return False
+    return _get('app', 'show_type')
     
 def get_apiKey():
-    if _get('app', 'ApiKey'):
-        return load_config().get('app', 'ApiKey')
-    return False
+    return _get('app', 'ApiKey') or os.environ.get('RAPIDAPI_KEY')
     
 def get_baseURL():
-    if _get('app', 'BaseURL'):
-        return load_config().get('app', 'BaseURL')
-    return False
+    return _get('app', 'BaseURL') or os.environ.get('RAPIDAPI_URL')
 
+def get_api_url():
+    base_url = get_baseURL()
+    if not base_url:
+        return None
+    if base_url.startswith(('http://', 'https://')):
+        return base_url
+    return f"https://{base_url}"
+
+def get_api_host():
+    api_url = get_api_url()
+    if not api_url:
+        return None
+    return urlparse(api_url).netloc

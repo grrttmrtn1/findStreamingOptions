@@ -3,27 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Movie Search</title>
+  <title>Where to Watch</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
   <div class="page-wrapper">
     <header class="site-header">
-      <div class="logo">🎬 Where to Watch</div>
+      <a class="logo" href="/">Where to Watch</a>
     </header>
 
     <main class="search-panel">
-      <h1>Find Your Next show</h1>
-      <p class="subtitle">Search where you can watch your next show.</p>
-      <form action="/getMovie" method="GET">
-        <input type="text" name="title" placeholder="e.g. Show Title" required />
+      <section class="hero-copy">
+        <p class="eyebrow">Streaming availability search</p>
+        <h1>Find where to watch a movie or show.</h1>
+        <p class="subtitle">Search by title, pick a country, then filter by service, price type, rating, and availability.</p>
+      </section>
+
+      <form class="search-form" action="/getMovie" method="GET">
+        <label for="title">Title</label>
+        <input id="title" type="text" name="title" placeholder="Dune, The Office, Breaking Bad" autocomplete="off" required />
+
+        <label for="country">Country</label>
+        <select id="country" name="country">
+          {% for country in countries %}
+            <option value="{{ country.code }}" {% if country.code == default_country %}selected{% endif %}>{{ country.name }}</option>
+          {% endfor %}
+        </select>
+
         <button type="submit">Search</button>
       </form>
-    </main>
 
-    <footer class="site-footer">
-    </footer>
+      <div class="quick-searches" aria-label="Popular searches">
+        <span>Try</span>
+        <a href="/getMovie?title=Dune&country={{ default_country }}">Dune</a>
+        <a href="/getMovie?title=The%20Office&country={{ default_country }}">The Office</a>
+        <a href="/getMovie?title=Breaking%20Bad&country={{ default_country }}">Breaking Bad</a>
+      </div>
+    </main>
   </div>
 </body>
 </html>
